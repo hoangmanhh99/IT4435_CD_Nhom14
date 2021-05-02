@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {authModerator} = require('../middlewares/authModerator')
+const { authModerator } = require('../middlewares/authModerator')
 const upload = require('../configs/multer.config');
 const albumController = require('../controllers/albumController');
 const asyncMiddleware = require('../middlewares/async');
