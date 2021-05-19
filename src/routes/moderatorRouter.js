@@ -2,9 +2,9 @@
 const router = require('express').Router();
 
 const { apiTypes,
-        validate,
-        getValidateResult
-        } = require('../middlewares/validate');
+  validate,
+  getValidateResult
+} = require('../middlewares/validate');
 const moderatorController = require('../controllers/moderatorController');
 const asyncMiddleware = require('../middlewares/async');
 
