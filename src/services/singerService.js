@@ -1,13 +1,14 @@
 const singerDao = require('../daos/singerDao');
 const {folder} = require('../configs/s3.config');
-const {uploadToS3} = require('./aws');
+const {uploadToS3,uploadFirebase} = require('./aws');
 const CustomError = require('../errors/CustomError');
 const codes = require('../errors/code');
 
 
 const create = async (data, file) => {
     if(file){
-        let pathAvatar = await uploadToS3(file.buffer, file.originalname, folder.IMAGES);
+       // let pathAvatar = await uploadToS3(file.buffer, file.originalname, folder.IMAGES);
+       let pathAvatar = await uploadFirebase(file,folder.IMAGES )
         data.avatar = {
             name: file.originalname,
             encoding: file.encoding,

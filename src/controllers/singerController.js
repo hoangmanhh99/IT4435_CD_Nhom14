@@ -2,9 +2,7 @@ const { Singer } = require('../models');
 const {singerService} = require('../services/index');
 const {uploadToS3,uploadFirebase} = require('../services/aws');
 const create = async (req, res) => {
-    
     const file = req.file;
-   // uploadFirebase(file) ;
     var data = req.body;
     const singer = await singerService.create(data, file);
     return res.send({status: 1, result: {singer}});
