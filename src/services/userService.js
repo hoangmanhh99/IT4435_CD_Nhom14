@@ -5,7 +5,7 @@ const message = require('../errors/message')
 const userDao = require('../daos/userDao');
 const {generateAccessToken} = require('../utils/gen');
 const historyService = require('./historyService');
-const {uploadToS3} = require('./aws');
+const {uploadToS3,uploadFirebase} = require('./aws');
 const {folder} = require('../configs/s3.config');
 const User = require('../models/User')
 
@@ -54,7 +54,7 @@ const register = async ({email, name, password}) => {
 
 const updateAvatar = async (userId, file) => {
     if(file){
-        let pathAvatar = await uploadToS3(file.buffer, file.originalname, folder.IMAGES);
+        let pathAvatar = await uploadFirebase(file,folder.IMAGES );
         let avatar = {
             name: file.originalname,
             encoding: file.encoding,

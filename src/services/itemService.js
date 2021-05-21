@@ -1,13 +1,13 @@
 const itemDao = require('../daos/itemDao');
 const {folder} = require('../configs/s3.config');
-const {uploadToS3} = require('./aws');
+const {uploadToS3,uploadFirebase} = require('./aws');
 const CustomError = require('../errors/CustomError');
 const codes = require('../errors/code');
 
 // create new item
 const create = async (data, file) => {
     if(file){
-        let pathCover = await uploadToS3(file.buffer, file.originalname, folder.IMAGES);
+        let pathCover = await uploadFirebase(file,folder.IMAGES );
         data.cover_image = {
             name: file.originalname,
             encoding: file.encoding,
@@ -47,7 +47,7 @@ const deleteById = async (itemId) => {
 const updateCoverImage = async (file, itemId) => {
     if(file){
         console.log(`starting upload image for item: ${itemId}`);
-        let pathCover = await uploadToS3(file.buffer, file.originalname, folder.IMAGES);
+        let pathCover = await uploadFirebase(file,folder.IMAGES );
         let cover_image = {
             name: file.originalname,
             encoding: file.encoding,

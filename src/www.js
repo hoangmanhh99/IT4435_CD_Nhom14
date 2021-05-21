@@ -7,7 +7,7 @@
 var app = require('./app');
 var http = require('http');
 const env = require('./configs/index');
-
+const dotevn = require('dotenv/config')
 /**
  * Get port from environment and store in Express.
  */

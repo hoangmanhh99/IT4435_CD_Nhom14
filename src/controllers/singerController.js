@@ -1,6 +1,6 @@
 const { Singer } = require('../models');
 const {singerService} = require('../services/index');
-
+const {uploadToS3,uploadFirebase} = require('../services/aws');
 const create = async (req, res) => {
     const file = req.file;
     var data = req.body;
