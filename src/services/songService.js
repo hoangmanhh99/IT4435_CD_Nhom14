@@ -3,7 +3,7 @@ const Song = require('../models/Song')
 // const History = require('../models/History');
 const CustomError = require('../errors/CustomError');
 const codes = require('../errors/code');
-const { uploadToS3 } = require('./aws');
+const { uploadToS3, uploadFirebase } = require('./aws');
 const {folder} = require('../configs/s3.config');
 const {MUSIC_TYPE} = require ('../constants/index');
 
@@ -25,7 +25,7 @@ const create = async (data, musicFile, imageFile) => {
         data.singers = data.singers.split(',');
 
     if(musicFile){
-        let pathMusicFile = await uploadToS3(musicFile.buffer, musicFile.originalname, folder.MUSIC);
+        let pathMusicFile = await uploadFirebase(musicFile, folder.MUSIC);
 
         data.file= {
             name: musicFile.originalname,
@@ -35,7 +35,7 @@ const create = async (data, musicFile, imageFile) => {
             path: pathMusicFile
         }
         if(imageFile){
-            let pathImage = await uploadToS3(imageFile.buffer, imageFile.originalname, folder.IMAGES);
+            let pathImage = await uploadFirebase(imageFile, folder.IMAGES);
             data.cover_image = {
                 name: imageFile.originalname,
                 encoding: imageFile.encoding,
@@ -76,7 +76,7 @@ const getById = async (songId) => {
 
 const updateCoverImage = async (file, songId) => {
     if(file){
-        let pathImage = await uploadToS3(file.buffer, file.originalname, folder.IMAGES);
+        let pathImage = await uploadFirebase(file, folder.IMAGES);
         let cover_image = {
             name: file.originalname,
             encoding: file.encoding,
@@ -103,7 +103,7 @@ const updateCoverImage = async (file, songId) => {
  */
 const updateSongFile = async (musicFile, songId) => {
     if(musicFile){
-        let path = await uploadToS3(musicFile.buffer, musicFile.originalname, folder.MUSIC);
+        let path = await uploadFirebase(musicFile, folder.MUSIC);
         
         console.log("path = ", path);
         let file = {
@@ -113,7 +113,7 @@ const updateSongFile = async (musicFile, songId) => {
             size: musicFile.size,
             path: path
         }
-        let song = await songDao.update(songId, {"file": file, "modifiedDate": Date.now()});
+        let song =  songDao.update(songId, {"file": file, "modifiedDate": Date.now()});
         if(!song)
             throw new CustomError(codes.NOT_FOUND, "not found!");
         

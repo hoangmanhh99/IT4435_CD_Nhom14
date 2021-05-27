@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-
+const dotevn = require('dotenv/config')
 const enviroment = require('./configs/index')
-const URI = `mongodb+srv://${enviroment.MONGO_USER}:${enviroment.MONGO_PASSWORD}@cluster-0.9towh.mongodb.net/nhac14?retryWrites=true&w=majority`;
+const URI = process.env.DB_CONNECTION;
 
  var connectDB = async () => {
      await mongoose.connect(URI,{

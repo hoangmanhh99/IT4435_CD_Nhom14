@@ -1,13 +1,13 @@
 const categoryDao = require('../daos/categoryDao');
 const {folder} = require('../configs/s3.config');
-const {uploadToS3} = require('./aws');
+const {uploadToS3,uploadFirebase} = require('./aws');
 const CustomError = require('../errors/CustomError');
 const codes = require('../errors/code');
 
 // create a new category
 const create = async (data, imageFile) => {
     if(imageFile){
-        let pathImage = await uploadToS3(imageFile.buffer, imageFile.originalname, folder.IMAGES);
+        let pathImage = await uploadFirebase(file,folder.IMAGES );
         data.cover_image = {
             name: imageFile.originalname,
             encoding: imageFile.encoding,

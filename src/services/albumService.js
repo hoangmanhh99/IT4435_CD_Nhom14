@@ -1,13 +1,13 @@
 const albumDao = require('../daos/albumDao');
 const {folder} = require('../configs/s3.config');
-const {uploadToS3} = require('./aws');
+const {uploadToS3,uploadFirebase} = require('./aws');
 const CustomError = require('../errors/CustomError');
 const codes = require('../errors/code');
 
 // create new album
 const create = async (data, file) => {
     if(file){
-        let pathCover = await uploadToS3(file.buffer, file.originalname, folder.IMAGES);
+        let pathCover = await uploadFirebase(file,folder.IMAGES )
         data.cover_image = {
             name: file.originalname,
             encoding: file.encoding,
