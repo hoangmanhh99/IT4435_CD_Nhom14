@@ -1,18 +1,30 @@
 const {userService} = require('../services/index');
 const {User, Song, Singer} = require('../models')
 const CustomError = require('../errors/CustomError');
-
+const {registerValidation,loginValidation} = require('../middlewares/validate') ;
 
 const register = async (req, res) => {
-    const {email, name, password} = req.body;
-    const result = await userService.register({email, name, password});
-    return res.send({"status": 1, "result": result});
+    const {error} = registerValidation(req.body)
+    if (error) res.status(400).send(error.details[0].message);
+    else {
+        const {email, name, password} = req.body;
+        const result = await userService.register({email, name, password});
+        return res.send({"status": 1, "result": result});
+    }
+    
 }
 
 const login = async (req, res) => {
-    const {email, password} = req.body;
-    const {accesstoken, avatar, name} = await userService.login(email, password);
-    return res.send({status: 1, result: {accesstoken, avatar, name}});
+   
+    // LETS VALIDATION THE DATA BEFORE WE A USER 
+    const {error} = loginValidation(req.body)
+    if (error) res.status(400).send(error.details[0].message);
+    else {
+        const {email, password} = req.body;
+        const {accesstoken, avatar, name} = await userService.login(email, password);
+        return res.send({status: 1, result: {accesstoken, avatar, name}});
+    }
+    
 }
 
 const updateAvatar = async (req, res, next) => {
