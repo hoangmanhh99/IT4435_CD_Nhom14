@@ -11,7 +11,7 @@ const schema = new Schema({
     },
     expireDate: Date,
     startDate: Date,
-    periodRemained: Number, 
+    periodRemained: Number,
     createdDate: {
         type: Date,
         default: Date.now
