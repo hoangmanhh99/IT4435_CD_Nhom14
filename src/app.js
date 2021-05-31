@@ -15,7 +15,7 @@ const exceptionHandler = require('./middlewares/exceptionHandler');
 
 var connectDB = require('./connect');
 const initial = require('./utils/initialRole');
-
+const dotevn = require('dotenv/config')
 
 connectDB();
  

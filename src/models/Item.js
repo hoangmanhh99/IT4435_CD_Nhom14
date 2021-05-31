@@ -28,7 +28,7 @@ const schema = new Schema({
     },
     createdBy: {
         type: mongoose.Types.ObjectId,
-        ref:"Moderator"
+        ref: "Moderator"
     },
     modifiedBy: {
         type: mongoose.Types.ObjectId,
