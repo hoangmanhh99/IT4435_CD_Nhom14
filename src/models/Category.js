@@ -5,7 +5,7 @@ const schema = new Schema({
 
     description: String,
 
-    list_song: [ {
+    list_song: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Song',
     }
@@ -29,7 +29,7 @@ const schema = new Schema({
     },
     createdBy: {
         type: mongoose.Types.ObjectId,
-        ref:"Moderator"
+        ref: "Moderator"
     },
     modifiedBy: {
         type: mongoose.Types.ObjectId,
