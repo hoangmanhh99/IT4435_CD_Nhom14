@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 const schema = new Schema({
-    
+
     userId: {
         type: mongoose.Types.ObjectId,
         ref: "User"
@@ -14,7 +14,7 @@ const schema = new Schema({
     musicAudios: [{
         type: mongoose.Types.ObjectId,
         ref: "Song"
-    }],         
+    }],
     playlists: [{
         type: mongoose.Types.ObjectId,
         ref: "Playlist"

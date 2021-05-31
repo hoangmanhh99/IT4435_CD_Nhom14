@@ -1,4 +1,4 @@
-const {Item} = require('../models/index');
+const { Item } = require('../models/index');
 
 // create new item document in Database
 const create = async (object) => {
@@ -14,13 +14,13 @@ const getById = async (id) => {
 
 // udate an item by its id
 const update = async (id, object) => {
-    const item = await Item.findByIdAndUpdate(id, object, {new: true});
+    const item = await Item.findByIdAndUpdate(id, object, { new: true });
     return item;
 }
 
 // delete an item by its id
 const deleteById = async (id) => {
-      await Item.findByIdAndDelete(id);
+    await Item.findByIdAndDelete(id);
 }
 
 
