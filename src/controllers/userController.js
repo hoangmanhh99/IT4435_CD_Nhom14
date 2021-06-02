@@ -1,30 +1,30 @@
-const {userService} = require('../services/index');
-const {User, Song, Singer} = require('../models')
+const { userService } = require('../services/index');
+const { User, Song, Singer } = require('../models')
 const CustomError = require('../errors/CustomError');
-const {registerValidation,loginValidation} = require('../middlewares/validate') ;
+const { registerValidation, loginValidation } = require('../middlewares/validate');
 
 const register = async (req, res) => {
-    const {error} = registerValidation(req.body)
+    const { error } = registerValidation(req.body)
     if (error) res.status(400).send(error.details[0].message);
     else {
-        const {email, name, password} = req.body;
-        const result = await userService.register({email, name, password});
-        return res.send({"status": 1, "result": result});
+        const { email, name, password } = req.body;
+        const result = await userService.register({ email, name, password });
+        return res.send({ "status": 1, "result": result });
     }
-    
+
 }
 
 const login = async (req, res) => {
-   
+
     // LETS VALIDATION THE DATA BEFORE WE A USER 
-    const {error} = loginValidation(req.body)
+    const { error } = loginValidation(req.body)
     if (error) res.status(400).send(error.details[0].message);
     else {
-        const {email, password} = req.body;
-        const {accesstoken, avatar, name} = await userService.login(email, password);
-        return res.send({status: 1, result: {accesstoken, avatar, name}});
+        const { email, password } = req.body;
+        const { accesstoken, avatar, name } = await userService.login(email, password);
+        return res.send({ status: 1, result: { accesstoken, avatar, name } });
     }
-    
+
 }
 
 const updateAvatar = async (req, res, next) => {
@@ -36,8 +36,8 @@ const updateAvatar = async (req, res, next) => {
         return next(new CustomError(401, "Please authenticate!"))
     }
     let avatar = await userService.updateAvatar(userId, file);
-    return res.send({status: 1, result: {avatar}});
-    
+    return res.send({ status: 1, result: { avatar } });
+
 }
 
 const get_user_info = async (req, res, next) => {
@@ -55,7 +55,7 @@ const get_user_info = async (req, res, next) => {
     userObject.favoriteSingers = [];
 
     for (let sgr of list_singers) {
-        
+
         singer = await Singer.findById(sgr);
         console.log("singers = ", singer)
         if (!singer) {
@@ -108,7 +108,7 @@ const like_song = async (req, res) => {
     // dislike Song
     if (song.users_liked.includes(req.user._id)) {
 
-        for( var i = 0; i < song.users_liked.length; i++) {
+        for (var i = 0; i < song.users_liked.length; i++) {
             if (song.users_liked[i].toString() === req.user._id.toString()) {
                 song.users_liked.splice(i, 1);
             }
@@ -118,13 +118,13 @@ const like_song = async (req, res) => {
 
         // delete favoriteSong from user
         if (song.type === "MA") {
-            for( let i = 0; i < user.favoriteMAs.length; i++) {
+            for (let i = 0; i < user.favoriteMAs.length; i++) {
                 if (user.favoriteMAs[i].toString() === song._id.toString()) {
                     user.favoriteMAs.splice(i, 1);
                 }
             }
         } else if (song.type === "MV") {
-            for( let i = 0; i < user.favoriteMVs.length; i++) {
+            for (let i = 0; i < user.favoriteMVs.length; i++) {
                 if (user.favoriteMVs[i].toString() === song._id.toString()) {
                     user.favoriteMVs.splice(i, 1);
                 }
@@ -166,7 +166,7 @@ const like_singers = async (req, res) => {
     let singer = await Singer.findById(req.params.id)
 
     if (!singer) {
-        res.status(404).json({ 
+        res.status(404).json({
             code: 9992,
             message: 'singer is not found'
         })
@@ -175,7 +175,7 @@ const like_singers = async (req, res) => {
     // dislike
     if (singer.users_liked.includes(req.user._id)) {
 
-        for( let i = 0; i < singer.users_liked.length; i++) {
+        for (let i = 0; i < singer.users_liked.length; i++) {
             if (singer.users_liked[i].toString() === req.user._id.toString()) {
                 singer.users_liked.splice(i, 1);
             }
@@ -184,7 +184,7 @@ const like_singers = async (req, res) => {
         singer.favorites -= 1
 
         // delete favoriteSinger from user
-        for( let i = 0; i < user.favoriteSingers.length; i++) {
+        for (let i = 0; i < user.favoriteSingers.length; i++) {
             if (user.favoriteSingers[i].toString() === singer._id.toString()) {
                 user.favoriteSingers.splice(i, 1);
             }
